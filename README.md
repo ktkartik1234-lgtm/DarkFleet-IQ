@@ -157,7 +157,7 @@ To distinguish clandestine cargo operations from benign sensor noise or routine 
 ## 📁 Repository Structure
 
 ```
-dark_fleet_analytics/
+DarkFleet-IQ/
 ├── README.md                           # Comprehensive documentation
 ├── requirements.txt                    # Modern data stack dependencies
 ├── run_pipeline.py                     # Master end-to-end orchestrator script

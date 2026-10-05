@@ -2,7 +2,7 @@
 DarkFleet-IQ: Maritime AIS Telemetry & Sanctions Forensics
 ===========================================================
 Engineered by Kartik Tripathi | B.Sc. in Physics, Chemistry & Mathematics
-GitHub: https://github.com/ktkartik1234-lgtm/Data-Analytics-Portfolio
+GitHub: https://github.com/ktkartik1234-lgtm/DarkFleet-IQ
 """
 
 import os
@@ -171,8 +171,8 @@ with st.sidebar:
     st.markdown(f"• **Average Latency:** < 15ms")
     
     st.markdown("---")
-    st.caption("[GitHub Repository](https://github.com/ktkartik1234-lgtm/Data-Analytics-Portfolio)")
-    st.caption("[13-Page PDF Technical Guide](file:///c:/Users/ktkar/Desktop/projects/dark_fleet_analytics/DarkFleet_IQ_Master_Engineering_Guide.pdf)")
+    st.caption("[GitHub Repository](https://github.com/ktkartik1234-lgtm/DarkFleet-IQ)")
+    st.caption("[13-Page PDF Technical Guide](https://github.com/ktkartik1234-lgtm/DarkFleet-IQ/blob/main/DarkFleet_IQ_Master_Engineering_Guide.pdf)")
 
 # -----------------------------------------------------------------------------
 # 4. Header & Executive Summary
