@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# dbt artifacts
+dbt_darkfleet/target/
+dbt_darkfleet/dbt_packages/
+dbt_darkfleet/logs/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

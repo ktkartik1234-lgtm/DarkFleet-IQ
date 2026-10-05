@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-09-12",
+  "sample_counts": {
+    "total_vessels": 120,
+    "total_dark_events": 55,
+    "total_telemetry_gaps_analyzed": 37525
+  },
+  "welch_t_test": {
+    "t_statistic": 33.03741763245997,
+    "p_value": 1.6822684871125003e-37,
+    "dark_mean_draft_delta_m": 7.9943636363636355,
+    "normal_mean_draft_delta_m": 0.010005552470849529,
+    "cohens_d": 99.33054196774347,
+    "conclusion": "Statistically significant draft change during transponder blackouts confirming mid-sea cargo lightering"
+  },
+  "mann_whitney_u_test": {
+    "u_statistic": 142581277.5,
+    "p_value": 7.655471380181671e-17
+  },
+  "chi_square_test": {
+    "chi2_statistic": 27.31848473795957,
+    "p_value": 1.7255394897177898e-07,
+    "odds_ratio": 44.108108108108105,
+    "cramers_v": 0.47713105063807826,
+    "contingency_table": [
+      [
+        34,
+        37
+      ],
+      [
+        1,
+        48
+      ]
+    ]
+  }
+}

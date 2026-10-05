@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: stg_vessels
+    description: "Standardized vessel registry containing cleaned metadata, IMO/MMSI identifiers, and flag risk categorizations."
+    columns:
+      - name: vessel_id
+        description: "Primary key for vessel registry."
+        tests:
+          - unique
+          - not_null
+      - name: imo_number
+        description: "International Maritime Organization unique 7-digit vessel identifier."
+        tests:
+          - unique
+          - not_null
+      - name: mmsi
+        description: "Maritime Mobile Service Identity 9-digit radio communication identifier."
+        tests:
+          - unique
+          - not_null
+      - name: flag_risk_category
+        description: "Geopolitical compliance risk rating for vessel flag state."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['HIGH_RISK_SANCTION_FLAG', 'FLAG_OF_CONVENIENCE', 'STANDARD_REGISTRY']
+
+  - name: stg_ais_pings
+    description: "Sanitized AIS satellite telemetry pings filtered for physical validity and temporal consistency."
+    columns:
+      - name: ping_id
+        description: "Unique surrogate key for individual AIS telemetry broadcast."
+        tests:
+          - unique
+          - not_null
+      - name: mmsi
+        description: "MMSI of broadcasting vessel."
+        tests:
+          - not_null
+      - name: ping_timestamp
+        description: "UTC timestamp of satellite transponder reception."
+        tests:
+          - not_null
+
+  - name: stg_high_risk_zones
+    description: "Geopolitical maritime choke points, sanction monitoring perimeters, and illicit STS transfer hotspots."
+    columns:
+      - name: zone_id
+        description: "Primary key for geopolitical zone."
+        tests:
+          - unique
+          - not_null
+      - name: risk_level
+        description: "Zone risk categorization."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['CRITICAL', 'HIGH', 'STANDARD']

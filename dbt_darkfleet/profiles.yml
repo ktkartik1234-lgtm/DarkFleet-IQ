@@ -1,0 +1,8 @@
+darkfleet_iq:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../data/darkfleet.duckdb"
+      schema: main
+      threads: 4

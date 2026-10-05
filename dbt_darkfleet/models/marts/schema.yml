@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: dim_high_risk_zones
+    description: "Geopolitical dimensions detailing maritime choke points, associated sanctions regimes, and compliance directives."
+    columns:
+      - name: zone_id
+        description: "Primary key for zone."
+        tests:
+          - unique
+          - not_null
+      - name: risk_level
+        description: "Assigned risk level."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['CRITICAL', 'HIGH', 'STANDARD']
+
+  - name: fct_dark_events
+    description: "Granular log of detected transponder gaps (>=12 hours) enriched with Haversine drift, draft change, cargo volume estimates, and severity scoring."
+    columns:
+      - name: event_id
+        description: "Primary key for forensic dark event."
+        tests:
+          - unique
+          - not_null
+      - name: ping_id
+        description: "Reconnecting AIS telemetry ping identifier."
+        tests:
+          - unique
+          - not_null
+      - name: mmsi
+        description: "MMSI of the offending vessel."
+        tests:
+          - not_null
+      - name: gap_hours
+        description: "Duration of blackout window in hours."
+        tests:
+          - not_null
+      - name: event_typology
+        description: "Forensic typology category."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [
+                'STS_CARGO_DISCHARGE_OFFLOAD',
+                'STS_CARGO_LOAD_TRANSFER',
+                'SPOOFING_OR_SUSPECT_CHOKEPOINT_BLACKOUT',
+                'ROUTINE_TRANSPONDER_LOSS'
+              ]
+      - name: forensic_severity_score
+        description: "Scoring metric between 0 and 100 assessing evasion severity."
+        tests:
+          - not_null
+
+  - name: fct_vessel_risk_summary
+    description: "Vessel-level risk intelligence rollup calculating cumulative blackout exposure, STS frequencies, composite Dark Fleet Risk Index, and regulatory compliance action."
+    columns:
+      - name: vessel_id
+        description: "Primary key for vessel record."
+        tests:
+          - unique
+          - not_null
+      - name: imo_number
+        description: "Unique IMO registration."
+        tests:
+          - unique
+          - not_null
+      - name: mmsi
+        description: "Radio MMSI identification."
+        tests:
+          - unique
+          - not_null
+      - name: risk_tier
+        description: "Assigned regulatory risk tier."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [
+                'CRITICAL_SANCTION_RISK',
+                'HIGH_SUSPICION',
+                'MODERATE_WATCHLIST',
+                'LOW_COMPLIANCE_RISK'
+              ]

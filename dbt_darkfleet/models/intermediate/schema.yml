@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: int_ais_gap_analysis
+    description: "Intermediate model applying bidirectional window functions (LAG and LEAD) to compute ping intervals, forward/backward draft shifts, and Haversine distance drift between successive AIS pings."
+    columns:
+      - name: ping_id
+        description: "Surrogate key for the ping."
+        tests:
+          - unique
+          - not_null
+      - name: mmsi
+        description: "Vessel MMSI."
+        tests:
+          - not_null
+      - name: gap_hours
+        description: "Duration between successive AIS broadcasts in hours."
+        tests:
+          - not_null
+      - name: draft_delta_meters
+        description: "Change in draft depth (current minus previous ping)."
+        tests:
+          - not_null
+      - name: drift_distance_km
+        description: "Spherical Haversine distance traversed during transponder window in km."
+        tests:
+          - not_null
