@@ -336,14 +336,15 @@ with tab_sql:
 -- Author: Kartik Tripathi
 -- Purpose: Detect transponder gaps by comparing each ping with its chronological predecessor
 SELECT 
-    vessel_id,
-    vessel_name,
-    timestamp AS ping_time,
-    draft_m,
-    LAG(timestamp, 1) OVER (PARTITION BY vessel_id ORDER BY timestamp ASC) AS prior_ping_time,
-    DATE_DIFF('minute', LAG(timestamp, 1) OVER (PARTITION BY vessel_id ORDER BY timestamp ASC), timestamp) / 60.0 AS gap_hours,
-    ROUND(LAG(draft_m, 1) OVER (PARTITION BY vessel_id ORDER BY timestamp ASC) - draft_m, 2) AS draft_drop_m
-FROM staging.stg_ais_pings
+    v.vessel_name,
+    v.flag_country,
+    p.ping_timestamp,
+    p.draft_depth_meters,
+    LAG(p.ping_timestamp, 1) OVER (PARTITION BY p.mmsi ORDER BY p.ping_timestamp ASC) AS prior_ping_timestamp,
+    DATE_DIFF('minute', LAG(p.ping_timestamp, 1) OVER (PARTITION BY p.mmsi ORDER BY p.ping_timestamp ASC), p.ping_timestamp) / 60.0 AS gap_hours,
+    ROUND(LAG(p.draft_depth_meters, 1) OVER (PARTITION BY p.mmsi ORDER BY p.ping_timestamp ASC) - p.draft_depth_meters, 2) AS draft_drop_m
+FROM staging.stg_ais_pings p
+JOIN staging.stg_vessels v ON p.mmsi = v.mmsi
 QUALIFY gap_hours >= 12.0
 ORDER BY draft_drop_m DESC
 LIMIT 12;
@@ -583,11 +584,11 @@ with tab_engineering:
     
     ##### 2. Handling Telemetry Noise & Out-of-Order Pings
     * Satellite AIS pings frequently arrive out of order because different LEO satellites pass over the target at varying angles.
-    * In `stg_ais_pings` and `int_ais_gap_analysis`, we resolved this by partitioning strictly by `vessel_id` and applying explicit `ORDER BY timestamp ASC` within window frames:
+    * In `stg_ais_pings` and `int_ais_gap_analysis`, we resolved this by partitioning strictly by `mmsi` and applying explicit `ORDER BY ping_timestamp ASC` within window frames:
       ```sql
-      LAG(timestamp, 1) OVER (PARTITION BY vessel_id ORDER BY timestamp ASC)
+      LAG(ping_timestamp, 1) OVER (PARTITION BY mmsi ORDER BY ping_timestamp ASC)
       ```
-    * We also enforced a dbt data quality assertion verifying that $\Delta t = \text{timestamp} - \text{prev\_timestamp} \ge 0$.
+    * We also enforced a dbt data quality assertion verifying that $\Delta t = \text{ping\_timestamp} - \text{prev\_ping\_timestamp} \ge 0$.
     
     ##### 3. How to Explain This Project in 90 Seconds to a Hiring Manager:
     > *“I built DarkFleet-IQ to detect clandestine oil transfers by shadow tankers that intentionally turn off their AIS transponders.*  
